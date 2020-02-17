@@ -31,32 +31,104 @@
 // ===========================================
 
 // Singleton (using closure)
-const Universe = (function () {
+// const Universe = (function () {
   
-  let instance;
+//   let instance;
 
-  return class Un {
-    constructor() {
-      if (typeof instance === 'object') {
-        return instance;
-      }
-      this.size = 100;
-      instance = this;
-    }
-    getSize () {
-      return this.size;
-    }
-    setSize (amount) {
-      this.size = amount;
-    }
-  };
-} ());
+//   return class Un {
+//     constructor() {
+//       if (typeof instance === 'object') {
+//         return instance;
+//       }
+//       this.size = 100;
+//       instance = this;
+//     }
+//     getSize () {
+//       return this.size;
+//     }
+//     setSize (amount) {
+//       this.size = amount;
+//     }
+//   };
+// } ());
 
 
-const a = new Universe();
-const b = new Universe();
+// const a = new Universe();
+// const b = new Universe();
 
-console.log(b===a);
-console.log(a.getSize(), b.getSize());
-a.setSize(300);
-console.log(a.getSize(), b.getSize());
+// console.log(b===a);
+// console.log(a.getSize(), b.getSize());
+// a.setSize(300);
+// console.log(a.getSize(), b.getSize());
+
+// ===========================================================
+
+// es6 to es5 inheritance
+
+// es6 code:
+
+// class Person {
+//   constructor (name) {
+//     this.name = name;
+//   }
+
+//   getName () {
+//     return this.name;
+//   }
+// }
+
+
+// class Man extends Person {
+//   constructor (name, facialHair) {
+//     super(name);
+//     this.facialHair = facialHair;
+//   }
+
+//   getName () {
+//     return `Name: ${super.getName()}`;
+//   }
+  
+//   getFacialHair () {
+//     return this.facialHair;
+//   }
+// }
+
+// const person = new Person('somebody');
+// console.log(person.getName()); // somebody
+
+// const man = new Man('Viktor', true);
+// console.log(man.getName()); // Name: Viktor
+// console.log(man.getFacialHair()); // true
+
+// es5 code:
+
+var Person = function (name) {
+  this.name = name;
+};
+
+Person.prototype.getName = function () {
+  return this.name;
+};
+
+var person1 = new Person("John");
+console.log(person1.getName());
+
+var Man = function (name, facialHair) {
+  Person.apply(this, arguments);
+  this.facialHair = facialHair;
+};
+
+Man.prototype = Object.create(Person.prototype);
+Man.constructor = Man;
+Man.prototype.getName = function () {
+  return 'Name: '+Person.prototype.getName.call(this);
+};
+Man.prototype.getFacialHair = function () {
+  return this.facialHair;
+};
+
+var man1 = new Man('Peter', true);
+console.log( man1.getFacialHair() );
+console.log( man1.getName() );
+console.log( man1 instanceof Man);
+console.log( man1 instanceof Person);
