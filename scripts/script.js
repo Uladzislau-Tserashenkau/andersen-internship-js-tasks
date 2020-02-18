@@ -149,7 +149,7 @@ function Person (name) {
 function Man (name, facialHair) {
   var that = Person(name);
   that.facialHair = facialHair;
-  parentGetName = that.getName;
+  var parentGetName = that.getName;
   that.getName = function () {
     return 'Name: ' + parentGetName();
   };
