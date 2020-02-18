@@ -102,33 +102,38 @@
 
 // es5 code:
 
-var Person = function (name) {
-  this.name = name;
-};
+// var Person = function (name) {
+//   this.name = name;
+// };
 
-Person.prototype.getName = function () {
-  return this.name;
-};
+// Person.prototype.getName = function () {
+//   return this.name;
+// };
 
-var person1 = new Person("John");
-console.log(person1.getName());
+// var person1 = new Person("John");
+// console.log(person1.getName());
 
-var Man = function (name, facialHair) {
-  Person.apply(this, arguments);
-  this.facialHair = facialHair;
-};
+// var Man = function (name, facialHair) {
+//   Person.apply(this, arguments);
+//   this.facialHair = facialHair;
+// };
 
-Man.prototype = Object.create(Person.prototype);
-Man.constructor = Man;
-Man.prototype.getName = function () {
-  return 'Name: '+Person.prototype.getName.call(this);
-};
-Man.prototype.getFacialHair = function () {
-  return this.facialHair;
-};
+// Man.prototype = Object.create(Person.prototype);
+// Man.constructor = Man;
+// Man.prototype.getName = function () {
+//   return 'Name: '+Person.prototype.getName.call(this);
+// };
+// Man.prototype.getFacialHair = function () {
+//   return this.facialHair;
+// };
 
-var man1 = new Man('Peter', true);
-console.log( man1.getFacialHair() );
-console.log( man1.getName() );
-console.log( man1 instanceof Man);
-console.log( man1 instanceof Person);
+// var man1 = new Man('Peter', true);
+// console.log( man1.getFacialHair() );
+// console.log( man1.getName() );
+// console.log( man1 instanceof Man);
+// console.log( man1 instanceof Person);
+
+// ========================================================
+
+// task3-functional-inheritance
+
