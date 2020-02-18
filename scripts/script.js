@@ -137,3 +137,31 @@
 
 // task3-functional-inheritance
 
+function Person (name) {
+  var that = {};
+  that.name = name;
+  that.getName = function () {
+    return that.name;
+  };
+  return that;
+}
+
+function Man (name, facialHair) {
+  var that = Person(name);
+  that.facialHair = facialHair;
+  var parentGetName = that.getName;
+  that.getName = function () {
+    return 'Name: ' + parentGetName();
+  };
+  that.getFacialHair = function () {
+    return that.facialHair;
+  };
+  return that;
+}
+
+const pers1 = Person('Peter');
+console.log(pers1.getName());
+
+const man1 = Man('Greg', true);
+console.log(man1.getFacialHair());
+console.log(man1.getName());
