@@ -168,3 +168,99 @@
 
 // ========================================
 
+// 1. Напиши функцию delay(ms), которая возвращает промис, переходящий в состояние "resolved" через ms миллисекунд и который несёт значение 100.
+// delay(1000).then(value => console.log(‘Done with ’ + value)); // Done with 100
+
+// function delay (ms) {
+//   return new Promise ((res,rej)=>{
+//     setTimeout(()=>{res(100)},ms);
+//   })
+// }
+
+// delay(1000).then( value => console.log('Done with' + value) );
+
+// ----------------------------------------------------------------------
+
+// 2. Напиши функцию в которой будет запрос на http://www.json-generator.com/api/json/get/cfQCylRjuG, из ответа ты получишь поле getUsersData, если значение равно true получи и выведи в консоль данные из http://www.json-generator.com/api/json/get/cfVGucaXPC
+
+// function getData () {
+//   fetch('http://www.json-generator.com/api/json/get/cfQCylRjuG')
+//   .then( result => result.json() )
+//   .then( data => new Promise( (res,rej) => data.getUsersData ? res() : rej() ) )
+//   .then( () => {
+//     return fetch('http://www.json-generator.com/api/json/get/cfVGucaXPC')
+//   } )
+//   .then( result => result.json() )
+//   .then( data => console.log(data) );
+// }
+
+// getData();
+
+// ----------------------------------------------------------------------
+
+// 3. Напиши функцию в которой тебе надо будет получить данные по следующим урлам:
+// http://www.json-generator.com/api/json/get/cevhxOsZnS
+// http://www.json-generator.com/api/json/get/cguaPsRxAi
+// http://www.json-generator.com/api/json/get/cfDZdmxnDm
+// http://www.json-generator.com/api/json/get/cfkrfOjrfS
+// http://www.json-generator.com/api/json/get/ceQMMKpidK
+
+// Когда все данные будут загружены выведи в консоль массив с этими данными, должно быть два варианта этой функции, первый вариант с параллельной загрузкой, второй с последовательной.
+
+// function getData(parallel) {
+        
+//   const links = [
+//     "http://www.json-generator.com/api/json/get/cevhxOsZnS",
+//     "http://www.json-generator.com/api/json/get/cguaPsRxAi",
+//     "http://www.json-generator.com/api/json/get/cfDZdmxnDm",
+//     "http://www.json-generator.com/api/json/get/cfkrfOjrfS",
+//     "http://www.json-generator.com/api/json/get/ceQMMKpidK"
+//   ];
+
+//   if (parallel) {
+//     return Promise.all( links.map( link => fetch(link).then( res => res.json() ) ));
+//   } else {
+//     return links.reduce( (promise, link) => { 
+//       return promise.then( (resultData) => { 
+//         return fetch(link)
+//               .then( result => result.json() )
+//               .then( data => {
+//                 resultData.push(data);
+//                 return resultData;
+//               })
+//       } );
+//     }, Promise.resolve([]))
+//   }
+// } 
+
+// getData(false) // parallel on
+// .then((result)=>{
+//   console.log('final result ', result );
+// });
+
+// getData(true) // parallel off
+// .then((result)=>{
+//   console.log('final result ', result );
+// });
+
+// ----------------------------------------------------------------------
+
+// 4. Написать функцию getResolvedPromise(value), которая возвращает зарезолвленный промис с значением value. Вызвать эту функцию со значением 500. Обработать вызов в then. Если придёт значение больше 300, то выбросить через throw ошибку c текстом ‘Ошибка’. Поймать ошибку через catch и вывести в консоль текст ошибки. Ниже описать finally, который будет выводить в консоль текст ‘This is Finally!’
+
+// function getResolvedPromise(value) {
+//   return Promise.resolve(value);
+// }
+
+// getResolvedPromise(500)
+// .then( val => {
+//   if (val > 300) {
+//     throw new Error('value is bigger than 300');
+//   }
+//   return val;
+// } )
+// .catch( e => {
+//   console.log(e);
+// })
+// .finally( () => {
+//   console.log('this is Finally!');
+// })
