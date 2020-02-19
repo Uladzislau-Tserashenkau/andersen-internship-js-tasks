@@ -1,7 +1,7 @@
-// Singleton 
+// Singleton
 
 // class Universe {
-  
+
 //   constructor () {
 //     if (typeof Universe.instance === 'object' ) {
 //       return Universe.instance;
@@ -32,7 +32,7 @@
 
 // Singleton (using closure)
 // const Universe = (function () {
-  
+
 //   let instance;
 
 //   return class Un {
@@ -51,7 +51,6 @@
 //     }
 //   };
 // } ());
-
 
 // const a = new Universe();
 // const b = new Universe();
@@ -77,7 +76,6 @@
 //   }
 // }
 
-
 // class Man extends Person {
 //   constructor (name, facialHair) {
 //     super(name);
@@ -87,7 +85,7 @@
 //   getName () {
 //     return `Name: ${super.getName()}`;
 //   }
-  
+
 //   getFacialHair () {
 //     return this.facialHair;
 //   }
@@ -171,27 +169,30 @@
 // 1. Напиши функцию delay(ms), которая возвращает промис, переходящий в состояние "resolved" через ms миллисекунд и который несёт значение 100.
 // delay(1000).then(value => console.log(‘Done with ’ + value)); // Done with 100
 
-// function delay (ms) {
+// function delay(ms) {
 //   return new Promise ((res,rej)=>{
-//     setTimeout(()=>{res(100)},ms);
+//     setTimeout(()=>res(100),ms);
 //   })
 // }
 
-// delay(1000).then( value => console.log('Done with' + value) );
+// delay(1000).then(value => console.log(`Done with ${value}`));
 
 // ----------------------------------------------------------------------
 
 // 2. Напиши функцию в которой будет запрос на http://www.json-generator.com/api/json/get/cfQCylRjuG, из ответа ты получишь поле getUsersData, если значение равно true получи и выведи в консоль данные из http://www.json-generator.com/api/json/get/cfVGucaXPC
 
-// function getData () {
+// function getData() {
 //   fetch('http://www.json-generator.com/api/json/get/cfQCylRjuG')
-//   .then( result => result.json() )
-//   .then( data => new Promise( (res,rej) => data.getUsersData ? res() : rej() ) )
-//   .then( () => {
-//     return fetch('http://www.json-generator.com/api/json/get/cfVGucaXPC')
-//   } )
-//   .then( result => result.json() )
-//   .then( data => console.log(data) );
+//   .then(result => result.json())
+//   .then(data => {    
+//     if (data.getUsersData) { 
+//       return fetch('http://www.json-generator.com/api/json/get/cfVGucaXPC');
+//     } else {
+//       throw new Error('getting data is forbidden');
+//     }
+//   })
+//   .then(result => result.json())
+//   .then(data => console.log(data));
 // }
 
 // getData();
@@ -207,8 +208,24 @@
 
 // Когда все данные будут загружены выведи в консоль массив с этими данными, должно быть два варианта этой функции, первый вариант с параллельной загрузкой, второй с последовательной.
 
-// function getData(parallel) {
-        
+// function getParallel(links) {
+//   return Promise.all(links.map(link => fetch(link).then(res => res.json())));
+// }
+
+// function getNoParallel(links) {
+//   return links.reduce((promise, link) => {
+//     return promise.then(resultData => {
+//       return fetch(link)
+//         .then(result => result.json())
+//         .then(data => {
+//           resultData.push(data);
+//           return resultData;
+//         });
+//     });
+//   }, Promise.resolve([]));
+// }
+
+// function getData(isParallel) {  
 //   const links = [
 //     "http://www.json-generator.com/api/json/get/cevhxOsZnS",
 //     "http://www.json-generator.com/api/json/get/cguaPsRxAi",
@@ -217,31 +234,18 @@
 //     "http://www.json-generator.com/api/json/get/ceQMMKpidK"
 //   ];
 
-//   if (parallel) {
-//     return Promise.all( links.map( link => fetch(link).then( res => res.json() ) ));
-//   } else {
-//     return links.reduce( (promise, link) => { 
-//       return promise.then( (resultData) => { 
-//         return fetch(link)
-//               .then( result => result.json() )
-//               .then( data => {
-//                 resultData.push(data);
-//                 return resultData;
-//               })
-//       } );
-//     }, Promise.resolve([]))
-//   }
-// } 
+//   return isParallel ? getParallel(links): getNoParallel(links);
+// }
 
-// getData(false) // parallel on
-// .then((result)=>{
-//   console.log('final result ', result );
-// });
+// getData(false) // isParallel on
+//   .then(result => {
+//     console.log("isParallel off ", result);
+//   });
 
-// getData(true) // parallel off
-// .then((result)=>{
-//   console.log('final result ', result );
-// });
+// getData(true) // isParallel off
+//   .then(result => {
+//     console.log("isParallel on ", result);
+//   });
 
 // ----------------------------------------------------------------------
 
@@ -252,15 +256,15 @@
 // }
 
 // getResolvedPromise(500)
-// .then( val => {
+// .then(val => {
 //   if (val > 300) {
 //     throw new Error('value is bigger than 300');
 //   }
 //   return val;
-// } )
-// .catch( e => {
+// })
+// .catch(e => {
 //   console.log(e);
 // })
-// .finally( () => {
+// .finally(() => {
 //   console.log('this is Finally!');
 // })
