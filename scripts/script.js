@@ -385,27 +385,54 @@
 
 // Написать свою реализацию new в виде функции myNew.
 
-function myNew(func) {
-  const obj = {};
-  Object.setPrototypeOf(obj, func.prototype);
-  const result = func.call(obj);
-  return typeof result === "object" ? result : obj;
+// function myNew(func) {
+//   const obj = {};
+//   Object.setPrototypeOf(obj, func.prototype);
+//   const result = func.call(obj);
+//   return typeof result === "object" ? result : obj;
+// }
+
+// function F() {
+//   this.a = 10;
+// }
+
+// function A() {
+//   return { b: 1 };
+// }
+
+// F.prototype.foo = function() {
+//   return this.a;
+// };
+
+// const a = myNew(A);
+// const b = myNew(F);
+// console.log(a); // { a: 10, __proto__: { foo, constructor } }
+// console.log(b);
+// console.log(b.foo()); // 10
+
+// ==========================================================================
+
+// 1.Реализовать функцию throttleTime
+// 	function myFunc() {
+//   console.log(‘test’)
+// }
+// const throttleFunc = throttleTime(myFunc, 500);
+// throttleFunc();
+
+// 2. Реализовать функцию debounceTime
+
+function myFunc() {
+  console.log("test");
 }
 
-function F() {
-  this.a = 10;
+function debounceTime(func, time) {
+  let timerId = 0;
+
+  return function() {
+    clearTimeout(timerId++);
+    setTimeout(func, time);
+  };
 }
 
-function A() {
-  return { b: 1 };
-}
-
-F.prototype.foo = function() {
-  return this.a;
-};
-
-const a = myNew(A);
-const b = myNew(F);
-console.log(a); // { a: 10, __proto__: { foo, constructor } }
-console.log(b);
-console.log(b.foo()); // 10
+const debounceFunc = debounceTime(myFunc, 500);
+debounceFunc();
