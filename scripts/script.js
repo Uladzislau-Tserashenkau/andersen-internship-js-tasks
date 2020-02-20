@@ -359,6 +359,12 @@
 //   );
 // }
 
+// function objectCreate2 (proto) {
+//   function f() {}
+//   f.prototype = proto
+//   return new f();
+// }
+
 // function objectCreate(protoObj, targetObj = {}) {
 //   const flattenedObj = Object.fromEntries(
 //     Object.entries(targetObj).map(arr =>
@@ -385,27 +391,30 @@
 
 // Написать свою реализацию new в виде функции myNew.
 
-function myNew(func) {
-  const obj = {};
-  Object.setPrototypeOf(obj, func.prototype);
-  const result = func.call(obj);
-  return typeof result === "object" ? result : obj;
-}
+// function myNew(func) {
+//   const obj = {};
+//   Object.setPrototypeOf(obj, func.prototype);
+//   const result = func.call(obj);
+//   return typeof result === "object" ? result : obj;
+// }
 
-function F() {
-  this.a = 10;
-}
+// function F() {
+//   this.a = 10;
+// }
 
-function A() {
-  return { b: 1 };
-}
+// function A() {
+//   return { b: 1 };
+// }
 
-F.prototype.foo = function() {
-  return this.a;
-};
+// F.prototype.foo = function() {
+//   return this.a;
+// };
 
-const a = myNew(A);
-const b = myNew(F);
-console.log(a); // { a: 10, __proto__: { foo, constructor } }
-console.log(b);
-console.log(b.foo()); // 10
+// const a = myNew(A);
+// const b = myNew(F);
+// console.log(a); // { a: 10, __proto__: { foo, constructor } }
+// console.log(b);
+// console.log(b.foo()); // 10
+
+// ==========================================================================
+
