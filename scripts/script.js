@@ -348,7 +348,7 @@
 //   }
 // });
 
-// function objectCreate(protoObj, targetObj) {
+// function objectCreate(protoObj, targetObj={}) {
 //   return Object.setPrototypeOf(
 //     Object.fromEntries(
 //       Object.entries(targetObj).map(arr =>
@@ -361,6 +361,11 @@
 
 // console.log(obj2); // { p: 20, k: 30, __proto__: { a: 1 } }
 
+// function A () {}
+// A.prototype.c = function () {};
+// function B () {}
+// B.prototype = objectCreate(A.prototype);
+// var b = new B();
 // ----------------------------------------------------------------------
 
 // Написать свою реализацию new в виде функции myNew.
@@ -383,3 +388,6 @@
 // const a = myNew(F);
 // console.log(a); // { a: 10, __proto__: { foo, constructor } }
 // console.log(a.foo()); // 10
+
+
+
