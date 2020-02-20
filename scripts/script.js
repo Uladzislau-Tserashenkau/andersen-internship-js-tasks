@@ -348,7 +348,7 @@
 //   }
 // });
 
-// function objectCreate(protoObj, targetObj={}) {
+// function objectCreateOld(protoObj, targetObj = {}) {
 //   return Object.setPrototypeOf(
 //     Object.fromEntries(
 //       Object.entries(targetObj).map(arr =>
@@ -359,11 +359,26 @@
 //   );
 // }
 
+// function objectCreate(protoObj, targetObj = {}) {
+//   const flattenedObj = Object.fromEntries(
+//     Object.entries(targetObj).map(arr =>
+//       arr.map(elem => (typeof elem === "object" ? elem.value : elem))
+//     )
+//   );
+//   function test(obj) {
+//     Object.entries(obj).forEach(arr => {
+//       this[arr[0]] = arr[1];
+//     });
+//   }
+//   test.prototype = { ...protoObj };
+//   return new test(flattenedObj);
+// }
+
 // console.log(obj2); // { p: 20, k: 30, __proto__: { a: 1 } }
 
-// function A () {}
-// A.prototype.c = function () {};
-// function B () {}
+// function A() {}
+// A.prototype.c = function() {};
+// function B() {}
 // B.prototype = objectCreate(A.prototype);
 // var b = new B();
 // ----------------------------------------------------------------------
@@ -388,6 +403,3 @@
 // const a = myNew(F);
 // console.log(a); // { a: 10, __proto__: { foo, constructor } }
 // console.log(a.foo()); // 10
-
-
-
