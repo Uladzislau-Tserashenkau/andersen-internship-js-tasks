@@ -385,21 +385,27 @@
 
 // Написать свою реализацию new в виде функции myNew.
 
-// function myNew(func) {
-//   const obj = {};
-//   Object.setPrototypeOf(obj, func.prototype);
-//   func.call(obj);
-//   return obj;
-// }
+function myNew(func) {
+  const obj = {};
+  Object.setPrototypeOf(obj, func.prototype);
+  const result = func.call(obj);
+  return typeof result === "object" ? result : obj;
+}
 
-// function F() {
-//   this.a = 10;
-// }
+function F() {
+  this.a = 10;
+}
 
-// F.prototype.foo = function() {
-//   return this.a;
-// };
+function A() {
+  return { b: 1 };
+}
 
-// const a = myNew(F);
-// console.log(a); // { a: 10, __proto__: { foo, constructor } }
-// console.log(a.foo()); // 10
+F.prototype.foo = function() {
+  return this.a;
+};
+
+const a = myNew(A);
+const b = myNew(F);
+console.log(a); // { a: 10, __proto__: { foo, constructor } }
+console.log(b);
+console.log(b.foo()); // 10
