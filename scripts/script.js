@@ -443,19 +443,18 @@
 
 // 2. Реализовать функцию debounceTime
 
-// function myFunc(val) {
-//   console.log("test " + val);
-// }
+function myFunc(val) {
+  console.log("test " + val);
+}
 
-// function debounceTime(func, time) {
-//   let timerId = 0;
+function debounceTime(func, time) {
+  let timerId = 0;
 
-//   return function(someVal) {
-//     const that = this;
-//     clearTimeout(timerId);
-//     timerId = setTimeout(func.bind(that, someVal), time);
-//   };
-// }
+  return function(...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => func(...args), time);
+  };
+}
 
-// const debounceFunc = debounceTime(myFunc, 500);
-// debounceFunc(20);
+const debounceFunc = debounceTime(myFunc, 500);
+debounceFunc(20);
