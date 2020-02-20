@@ -385,27 +385,76 @@
 
 // Написать свою реализацию new в виде функции myNew.
 
-function myNew(func) {
-  const obj = {};
-  Object.setPrototypeOf(obj, func.prototype);
-  const result = func.call(obj);
-  return typeof result === "object" ? result : obj;
+// function myNew(func) {
+//   const obj = {};
+//   Object.setPrototypeOf(obj, func.prototype);
+//   const result = func.call(obj);
+//   return typeof result === "object" ? result : obj;
+// }
+
+// function F() {
+//   this.a = 10;
+// }
+
+// function A() {
+//   return { b: 1 };
+// }
+
+// F.prototype.foo = function() {
+//   return this.a;
+// };
+
+// const a = myNew(A);
+// const b = myNew(F);
+// console.log(a); // { a: 10, __proto__: { foo, constructor } }
+// console.log(b);
+// console.log(b.foo()); // 10
+
+// ==========================================================================
+
+// 1.Реализовать функцию throttleTime
+// function myFunc(someVal) {
+//   console.log("test " + someVal);
+// }
+
+// const throttleFunc = throttleTime(myFunc, 1500);
+// throttleFunc(10);
+
+// setTimeout(() => {
+//   throttleFunc(20);
+// }, 1100);
+
+// setTimeout(() => {
+//   throttleFunc(1000);
+// }, 1900);
+
+// function throttleTime(func, time) {
+//   let isReadyToLaunch = true;
+//   const throttleHandler = () => (isReadyToLaunch = true);
+
+//   return function(val) {
+//     if (isReadyToLaunch) {
+//       isReadyToLaunch = false;
+//       setTimeout(throttleHandler, time);
+//       return func(val);
+//     }
+//   };
+// }
+
+// 2. Реализовать функцию debounceTime
+
+function myFunc(val) {
+  console.log("test " + val);
 }
 
-function F() {
-  this.a = 10;
+function debounceTime(func, time) {
+  let timerId = 0;
+
+  return function(...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => func(...args), time);
+  };
 }
 
-function A() {
-  return { b: 1 };
-}
-
-F.prototype.foo = function() {
-  return this.a;
-};
-
-const a = myNew(A);
-const b = myNew(F);
-console.log(a); // { a: 10, __proto__: { foo, constructor } }
-console.log(b);
-console.log(b.foo()); // 10
+const debounceFunc = debounceTime(myFunc, 500);
+debounceFunc(20);
