@@ -413,43 +413,49 @@
 // ==========================================================================
 
 // 1.Реализовать функцию throttleTime
-// function myFunc() {
-//   console.log("test");
+// function myFunc(someVal) {
+//   console.log("test " + someVal);
 // }
 
 // const throttleFunc = throttleTime(myFunc, 1500);
-// throttleFunc();
+// throttleFunc(10);
 
-// setTimeout(throttleFunc, 1800);
+// setTimeout(() => {
+//   throttleFunc(20);
+// }, 1100);
+
+// setTimeout(() => {
+//   throttleFunc(1000);
+// }, 1900);
 
 // function throttleTime(func, time) {
-//   let isReadyToLaunch = false;
+//   let isReadyToLaunch = true;
+//   const throttleHandler = () => (isReadyToLaunch = true);
 
-//   setTimeout(() => {
-//     isReadyToLaunch = true;
-//   }, time);
-
-//   return function() {
+//   return function(val) {
 //     if (isReadyToLaunch) {
-//       return func();
+//       isReadyToLaunch = false;
+//       setTimeout(throttleHandler, time);
+//       return func(val);
 //     }
 //   };
 // }
 
 // 2. Реализовать функцию debounceTime
 
-// function myFunc() {
-//   console.log("test");
+// function myFunc(val) {
+//   console.log("test " + val);
 // }
 
 // function debounceTime(func, time) {
 //   let timerId = 0;
 
-//   return function() {
-//     clearTimeout(timerId++);
-//     setTimeout(func, time);
+//   return function(someVal) {
+//     const that = this;
+//     clearTimeout(timerId);
+//     timerId = setTimeout(func.bind(that, someVal), time);
 //   };
 // }
 
 // const debounceFunc = debounceTime(myFunc, 500);
-// debounceFunc();
+// debounceFunc(20);
