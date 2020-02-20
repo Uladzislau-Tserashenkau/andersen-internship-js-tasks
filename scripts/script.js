@@ -184,8 +184,8 @@
 // function getData() {
 //   fetch('http://www.json-generator.com/api/json/get/cfQCylRjuG')
 //   .then(result => result.json())
-//   .then(data => {    
-//     if (data.getUsersData) { 
+//   .then(data => {
+//     if (data.getUsersData) {
 //       return fetch('http://www.json-generator.com/api/json/get/cfVGucaXPC');
 //     } else {
 //       throw new Error('getting data is forbidden');
@@ -225,7 +225,7 @@
 //   }, Promise.resolve([]));
 // }
 
-// function getData(isParallel) {  
+// function getData(isParallel) {
 //   const links = [
 //     "http://www.json-generator.com/api/json/get/cevhxOsZnS",
 //     "http://www.json-generator.com/api/json/get/cguaPsRxAi",
@@ -269,14 +269,143 @@
 //   console.log('this is Finally!');
 // })
 
-
 // ==========================================================================
 
 // Реализовать метод дублирования элементов массива.
 // console.log([1, 2, 3, 4].duplicate()) // [1, 2, 3, 4, 1, 2, 3, 4]
 
-Array.prototype.duplicate = function () {
-  return this.concat(this);
+// Array.prototype.duplicate = function () {
+//   return this.concat(this);
+// };
+
+// console.log([23,1,2].duplicate());
+
+// ==========================================================================
+
+// Bind, Call, Apply.
+
+// Реализовать apply с помощью call (название - myApply).
+// Реализовать call с помощью apply (название - myCall).
+// Реализовать bind с помощью call (название - myBindByCall).
+
+// console.log(obj1.foo.myApply(obj2, [5, 5])); // 40
+// console.log(obj1.foo.myApply(obj2, [5, 5, 10])); // 50
+// console.log(obj1.foo.myCall(obj2, 5, 5, 20)); // 60
+// console.log(obj1.foo.myCall(obj2, 5, 5, 10, 20)); // 70
+
+// const f1 = obj1.foo.myBindByCall(obj2, 5, 5);
+// console.log(f1()); // 40
+// const f2 = obj1.foo.myBindByCall(obj2, 5, 5, 10);
+// console.log(f2()); // 50
+
+// const obj1 = {
+//   a: 20,
+//   foo: function(...numbers) {
+//     return this.a + numbers.reduce((prev, curr) => prev + curr);
+//   }
+// };
+
+// const obj2 = {
+//   a: 30
+// };
+
+// Function.prototype.myCall = function(target, ...paramArr) {
+//   return this.apply(target, paramArr);
+// };
+
+// Function.prototype.myApply = function(target, paramArr) {
+//   return this.call(target, ...paramArr);
+// };
+
+// Function.prototype.myBindByCall = function(target, ...paramArr) {
+//   return () => this.call(target, ...paramArr);
+// };
+
+// console.log(obj1.foo.myApply(obj2, [5, 5])); // 40
+// console.log(obj1.foo.myApply(obj2, [5, 5, 10])); // 50
+// console.log(obj1.foo.myCall(obj2, 5, 5, 20)); // 60
+// console.log(obj1.foo.myCall(obj2, 5, 5, 10, 20)); // 70
+
+// const f1 = obj1.foo.myBindByCall(obj2, 5, 5);
+// console.log(f1()); // 40
+// const f2 = obj1.foo.myBindByCall(obj2, 5, 5, 10);
+// console.log(f2()); // 50
+
+// ----------------------------------------------------------------------
+
+// Написать полифил на Object.create.
+
+// const obj = {
+//   a: 1
+// };
+
+// const obj2 = objectCreate(obj, {
+//   p: {
+//     value: 20
+//   },
+//   k: {
+//     value: 30
+//   }
+// });
+
+// function objectCreateOld(protoObj, targetObj = {}) {
+//   return Object.setPrototypeOf(
+//     Object.fromEntries(
+//       Object.entries(targetObj).map(arr =>
+//         arr.map(elem => (typeof elem === "object" ? elem.value : elem))
+//       )
+//     ),
+//     protoObj
+//   );
+// }
+
+// function objectCreate(protoObj, targetObj = {}) {
+//   const flattenedObj = Object.fromEntries(
+//     Object.entries(targetObj).map(arr =>
+//       arr.map(elem => (typeof elem === "object" ? elem.value : elem))
+//     )
+//   );
+//   function test(obj) {
+//     Object.entries(obj).forEach(arr => {
+//       this[arr[0]] = arr[1];
+//     });
+//   }
+//   test.prototype = { ...protoObj };
+//   return new test(flattenedObj);
+// }
+
+// console.log(obj2); // { p: 20, k: 30, __proto__: { a: 1 } }
+
+// function A() {}
+// A.prototype.c = function() {};
+// function B() {}
+// B.prototype = objectCreate(A.prototype);
+// var b = new B();
+// ----------------------------------------------------------------------
+
+// Написать свою реализацию new в виде функции myNew.
+
+function myNew(func) {
+  const obj = {};
+  Object.setPrototypeOf(obj, func.prototype);
+  const result = func.call(obj);
+  return typeof result === "object" ? result : obj;
+}
+
+function F() {
+  this.a = 10;
+}
+
+function A() {
+  return { b: 1 };
+}
+
+F.prototype.foo = function() {
+  return this.a;
 };
 
-console.log([23,1,2].duplicate());
+const a = myNew(A);
+const b = myNew(F);
+console.log(a); // { a: 10, __proto__: { foo, constructor } }
+console.log(b);
+console.log(b.foo()); // 10
