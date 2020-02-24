@@ -459,6 +459,209 @@
 // const debounceFunc = debounceTime(myFunc, 500);
 // debounceFunc(20);
 
-
 // ==========================================================================
 
+// Реализовать функцию, принимающую строку “a.b.c.d” и возвращающая объект со свойством объектом - a, со свойством объектом - b, со свойством объектом - с, со свойством d, равным null. Можно передать любую строку в указанном формате х.х.х.х.х.х…, и получить объект с вложенными объектами и завершающим null.
+
+// Версия с рекурсией
+
+// function stringToObj(str) {
+//   const letters = str.split(".");
+
+//   function objMaker(i=0) {
+//     let obj = {};
+//     if (letters.length - 1 === i) {
+//       obj[letters[i]] = null;
+//     } else {
+//       obj[letters[i]] = objMaker(i + 1);
+//     }
+//     return obj;
+//   }
+
+//   return objMaker();
+// }
+// console.log(stringToObj("x.x.s.v.a.s.x"));
+
+// Версия чз редьюс
+
+// function stringToObj(str) {
+//   let resultObj = {};
+//   str.split(".").reduce((obj, letter) => {
+//     obj[letter] = {};
+//     return obj[letter];
+//   }, resultObj);
+//   return resultObj;
+// }
+
+// console.log(stringToObj("a.b.c.d"));
+
+// --------------------------------------------------------------------------------------------
+
+// Реализовать функции объединения, пересечения, разности элементов двух массивов:
+// Объединение - union(a, b)
+// Пересечение - intersection(a, b)
+// Разность - difference(a, b)
+
+// -----------------------------------------------------------------------------
+
+// console.log(union([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9]));
+// [4, 5, 7, 2, 1, 3, 9]
+
+// es5
+// function union(arr1, arr2) {
+//   let resultArr = arr1.concat(arr2);
+//   for (let i = 0; i < resultArr.length; i++) {
+//     for (let j = i+1; j < resultArr.length; j++) {
+//       if (resultArr[i] === resultArr[j]) {
+//         resultArr.splice(j,1);
+//       }
+//     }
+//   }
+//   return resultArr;
+// }
+
+// чз set
+// console.log(union([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9]));
+// // [4, 5, 7, 2, 1, 3, 9]
+// function union (arr1, arr2) {
+//   return (Array.from(new Set([...arr1, ...arr2])));
+// }
+
+// -----------------------------------------------------------------------------
+
+// console.log(intersection([1, 2, 3], [4, 3, 2])); // [2, 3]
+
+// function intersection(arr1, arr2) {
+//   return arr1.filter(num => arr2.includes(num));
+// }
+
+// -----------------------------------------------------------------------------
+
+// console.log(diff([1, 2, 3, 7, 9], [4, 5, 7, 2, 1, 5])); // [3, 9]
+// console.log(diff([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9])); // [4, 5]
+
+// function diff(arr1, arr2) {
+//   const result = [];
+//   arr1.forEach(num => {
+//     if (!arr2.includes(num) && !result.includes(num) ) {
+//       result.push(num);
+//     }
+//   });
+//   return result;
+// }
+
+// -----------------------------------------------------------------------------
+// Анаграммы
+
+// const input = [
+//   "вертикаль",
+//   "кильватер",
+//   "апельсин",
+//   "спаниель",
+//   "австралопитек",
+//   "ватерполистка",
+//   "кластер",
+//   "сталкер",
+//   "стрелка"
+// ];
+
+// function isAnagramChecker(str1, str2) {
+//   return (
+//     str1.length === str2.length &&
+//     str1.split("").every(letter => str2.includes(letter))
+//   );
+// }
+
+// function anagrams(arr) {
+//   let arrCopy = [...arr];
+//   let result = [];
+
+//   for (let i = 0; i < arrCopy.length; i++) {
+//     let set = new Set();
+//     set.add(arrCopy[i]);
+//     for (let j = i; j < arrCopy.length; j++) {
+//       if (isAnagramChecker(arrCopy[i], arrCopy[j])) {
+//         set.add(arrCopy[j]);
+//         i=j;
+//       }
+//     }
+//     result.push(Array.from(set));
+//   }
+//   return result;
+// }
+
+// console.log(anagrams(input));
+
+// ===================================================================================
+
+// 4. Написать функцию sum, которая работает с многим количеством последовательных вызовов. Должны работать следующие вызовы:
+
+// console.log(sum(1)(2)(3)()); // 6
+// console.log(sum(1)(2)(3)(4) + 1); // 11
+// console.log(sum(1)(2)(3)(4)(5) + 1); // 16
+
+// function sum (num) {
+//   let sum = num;
+
+//   function func (nextNum) {
+//     if (nextNum === undefined) {
+//       return sum;
+//     }
+//     sum+=nextNum;
+//     return func;
+//   }
+
+//   func.valueOf = function () {
+//     return sum;
+//   };
+
+//   return func;
+// }
+
+// =======================================================================
+
+// 5. Написать  функцию prop, в которую передается ключ для получение значение по этому ключу.
+
+// const tweeps = [
+//   { name: 'Peter', age: 20 },
+//   { name: 'Mary', age: 32 }
+// ];
+
+// const prop = field => obj => obj[field];
+
+// // 'Mentioned by Peter, Mary'
+// const str = 'Mentioned by ' + tweeps.map(prop('name')).join(', ');
+// // ‘They are 20, 32’
+// const agesStr = `They are ${tweeps.map(prop('age')).join(',')}`
+
+// console.log(str);
+// console.log(agesStr);
+
+// =======================================================================
+
+// let x = false && ''          // x = false
+// x = false || ''              // x = ''
+// x = '' || 'Yes'              // x = 'Yes'
+// x = {} && 'Some'             // x = 'Some'
+// x = {} || 'Some'             // x = {}
+// x = {a: 10} && 'Some'        // x = 'Some'
+// x = {a: 10} || 'Some'        // x = {a:10}
+// x = 0 || true                // x = true
+// x = null || 0                // x = 0
+// x = undefined && 0           // x = undefined
+// x = '' || 0 && true          // x = 0
+// x = {} || 0 && true          // x = {}
+// x = false || {} && true      // x = true
+
+// =======================================================================
+
+// 7.   Написать функцию compose, add, mul. add и mul - каррированные функции (только на 2 вызова). функция compose принимает неограниченное кол-во функций и применяет эти функции в обратном порядке.
+
+// const mul = num => num2 => num * num2;
+// const add = num => num2 => num + num2;
+// const compose = (...args) => num =>
+//   args.reduceRight((nextArg, func) => func(nextArg), num);
+
+// const composed = compose(mul(2), add(5), add(2));
+// console.log(composed(3)); // 20
+// console.log([1, 2, 6].map(composed)); // [16, 18, 26]
