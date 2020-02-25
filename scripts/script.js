@@ -485,12 +485,11 @@
 // Версия чз редьюс
 
 // function stringToObj(str) {
-//   let resultObj = {};
-//   str.split(".").reduce((obj, letter) => {
-//     obj[letter] = {};
-//     return obj[letter];
-//   }, resultObj);
-//   return resultObj;
+//   return str.split(".").reduceRight((obj, letter) => {
+//     let o = {};
+//     o[letter] = obj;
+//     return o;
+//   }, null );
 // }
 
 // console.log(stringToObj("a.b.c.d"));
@@ -506,19 +505,6 @@
 
 // console.log(union([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9]));
 // [4, 5, 7, 2, 1, 3, 9]
-
-// es5
-// function union(arr1, arr2) {
-//   let resultArr = arr1.concat(arr2);
-//   for (let i = 0; i < resultArr.length; i++) {
-//     for (let j = i+1; j < resultArr.length; j++) {
-//       if (resultArr[i] === resultArr[j]) {
-//         resultArr.splice(j,1);
-//       }
-//     }
-//   }
-//   return resultArr;
-// }
 
 // чз set
 // console.log(union([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9]));
@@ -540,19 +526,21 @@
 // console.log(diff([1, 2, 3, 7, 9], [4, 5, 7, 2, 1, 5])); // [3, 9]
 // console.log(diff([4, 5, 7, 2, 1, 5], [1, 2, 3, 7, 9])); // [4, 5]
 
-// function diff(arr1, arr2) {
-//   const result = [];
-//   arr1.forEach(num => {
-//     if (!arr2.includes(num) && !result.includes(num) ) {
-//       result.push(num);
+// function diff (arr1, arr2) {
+//   return arr1.reduce((acc, num)=>{
+//     if (!arr2.includes(num) && !acc.includes(num) ) {
+//       acc.push(num);
 //     }
-//   });
-//   return result;
+//     return acc;
+//   }, []);
 // }
 
 // -----------------------------------------------------------------------------
 // Анаграммы
 
+// String.prototype.sort = function () {
+//   return this.split('').sort().join('');
+// };
 // const input = [
 //   "вертикаль",
 //   "кильватер",
@@ -565,12 +553,21 @@
 //   "стрелка"
 // ];
 
-// function isAnagramChecker(str1, str2) {
-//   return (
-//     str1.length === str2.length &&
-//     str1.split("").every(letter => str2.includes(letter))
-//   );
+// function anagrams (arr) {
+//   let map = new Map();
+//   let counter = 0;
+
+//   return arr.reduce((resArr, word)=>{
+//     let sortedWord = word.sort();
+//     if (!map.has(sortedWord)) {    
+//       map.set(sortedWord, counter++);
+//       resArr.push([]);
+//     }    
+//     resArr[map.get(sortedWord)].push(word);
+//     return resArr;
+//   },[]);
 // }
+// console.log(anagrams(input));
 
 // function anagrams(arr) {
 //   let arrCopy = [...arr];
@@ -589,8 +586,6 @@
 //   }
 //   return result;
 // }
-
-// console.log(anagrams(input));
 
 // ===================================================================================
 
