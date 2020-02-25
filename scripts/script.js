@@ -486,9 +486,7 @@
 
 // function stringToObj(str) {
 //   return str.split(".").reduceRight((obj, letter) => {
-//     let o = {};
-//     o[letter] = obj;
-//     return o;
+//     return {[letter]:obj};
 //   }, null );
 // }
 
@@ -538,8 +536,10 @@
 // -----------------------------------------------------------------------------
 // Анаграммы
 
-// String.prototype.sort = function () {
-//   return this.split('').sort().join('');
+// String.prototype.sort = function() {
+//   return this.split("")
+//     .sort()
+//     .join("");
 // };
 // const input = [
 //   "вертикаль",
@@ -553,19 +553,18 @@
 //   "стрелка"
 // ];
 
-// function anagrams (arr) {
-//   let map = new Map();
-//   let counter = 0;
-
-//   return arr.reduce((resArr, word)=>{
-//     let sortedWord = word.sort();
-//     if (!map.has(sortedWord)) {    
-//       map.set(sortedWord, counter++);
-//       resArr.push([]);
-//     }    
-//     resArr[map.get(sortedWord)].push(word);
-//     return resArr;
-//   },[]);
+// function anagrams(arr) {
+//   return Array.from(
+//     arr.reduce((map, word) => {
+//         let sortedWord = word.sort();
+//         if (!map.has(sortedWord)) {
+//           map.set(sortedWord, []);
+//         }
+//         map.get(sortedWord).push(word);
+//         return map;
+//       }, new Map())
+//       .values()
+//   );
 // }
 // console.log(anagrams(input));
 
